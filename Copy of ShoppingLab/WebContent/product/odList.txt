@@ -1,0 +1,70 @@
+<%@page import="mypkg.Order"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./../common/top.jsp" %>    
+<!DOCTYPE html>
+<jsp:useBean id="dao" class="mypkg.DatabaseDao"></jsp:useBean>
+<%
+	List<Order> orders = null; 
+	if( whologin == 0 ){
+		session.setAttribute("gotopage", "./../admin/odList.jsp") ;
+		response.sendRedirect( "./../member/meLoginForm.jsp") ; 		
+		
+	}else{
+		orders = dao.SelectOrderList( loginfo.getId() ) ;	
+	}
+%>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title> odList.jsp </title>
+</head>
+<body>
+<tr>
+<td colspan="5" align="center">
+	<h2 align="center">고객 
+		<% if( loginfo != null){ %>
+		<%=loginfo.getName()%>
+		<% }%>
+		님의 주문 내역</h2>
+	<table border="1" align="center"> 
+		<tr>
+			<td>송장 번호</td>
+			<td>주문 날짜</td>
+			<td>상세 보기</td>
+		</tr>
+		<%
+			if(orders != null){
+				for(Order item : orders){
+		%>
+		<tr>
+			<td><%=item.getOid()%></td>
+			<td><%=item.getOrderdate()%></td>
+			<td>
+				<a href="odDetailView.jsp?oid=<%=item.getOid()%>">
+					상세 보기
+				</a>
+			</td>
+		</tr>
+		<% 
+				}	
+			}
+		%>
+	</table>
+</td>
+</tr>
+<%@ include file="./../common/bottom.jsp" %>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

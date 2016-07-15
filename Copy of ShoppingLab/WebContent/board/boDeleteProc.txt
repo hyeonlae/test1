@@ -1,0 +1,29 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./../common/top.jsp" %>    
+<!DOCTYPE html>
+<jsp:useBean id="dao" class="mypkg.DatabaseDao"></jsp:useBean>
+<%
+	int cnt = - 99999 ; 
+	int no = Integer.parseInt( request.getParameter("no")) ; 
+	cnt = dao.DeleteBoard( no ) ;
+	
+	String pageNumber = request.getParameter("pageNumber") ;
+	String pageSize = request.getParameter("pageSize") ;
+	response.sendRedirect("boList.jsp?pageNumber=" + pageNumber + "&pageSize=" + pageSize ) ;
+%>
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>제목</title>
+</head>
+<body>
+<tr>
+<td colspan="5" align="center">
+	게시물 삭제 하기
+</td>
+</tr>
+<%@ include file="./../common/bottom.jsp" %>
+</body>
+</html>

@@ -1,0 +1,25 @@
+-- 데이터베이스 내에서 다음 테이블을 생성한다.
+drop table zipcodes purge;
+create table zipcodes(
+	zipcode varchar2(500),
+	sido varchar2(500),
+	gugun varchar2(500),
+	dong varchar2(500),
+	bunji varchar2(500),
+	seqnum number
+);
+
+-- 다음 파일들을 c:\post 폴더에 복사한다
+-- 컨트롤 파일 : 
+--	외부의 파일을 테이블에 넣기 위한 방법을 정의해 둔 파일로써
+--	확장자는 일반적으로 ctl로 만든다.
+ 
+zip_ctl.ctl
+zipcode.csv
+ 
+-- sqlLoader : 외부의 텍스트 파일의 내용을 내부의 데이터 베이스 내로 인서트 하기 위한 유틸리티  
+-- cmd 창에서 다음 문장을 실행한다.
+sqlldr userid=ora16/oracle control=c:\post\zip_ctl.ctl log=c:\post\zipcode_log.log
+
+select count(*) from zipcodes ;
+-- 조회된 행수 : 51810 

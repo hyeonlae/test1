@@ -1,0 +1,34 @@
+<%@page import="java.util.Map"%>
+<%@page import="mall.cart.MyCartList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./../common/top.jsp" %>    
+<!DOCTYPE html>
+<jsp:useBean id="dao" class="mypkg.DatabaseDao"></jsp:useBean>
+<%
+	MyCartList mycart = (MyCartList)session.getAttribute("mycart") ;
+	Map<Integer, Integer> shoplists = mycart.GetAllOrderLists() ;
+	
+	int cnt = -99999 ;
+	cnt = dao.SaleItem( loginfo.getId(), shoplists ) ;
+	
+	mycart.RemoveAllProductInfo() ;  
+	session.removeAttribute("shoplists") ;
+	session.removeAttribute("mycart") ;
+	
+	response.sendRedirect( "prList.jsp" ) ; 
+%>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>제목</title>
+</head>
+<body>
+<tr>
+<td colspan="5" align="center">
+	여기에 할일을 ...
+</td>
+</tr>
+<%@ include file="./../common/bottom.jsp" %>
+</body>
+</html>

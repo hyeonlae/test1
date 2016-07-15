@@ -1,0 +1,83 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%@ include file="./../common/top.jsp" %>
+<jsp:useBean id="dao" class="mypkg.DatabaseDao"></jsp:useBean>
+<jsp:useBean id="product" class="mypkg.Product"></jsp:useBean>
+<%
+	int num = Integer.parseInt( request.getParameter("num")) ;
+	product = dao.SelectProductByPk(num) ;
+%>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>Insert title here</title>
+</head>
+<body>
+<tr>
+<td colspan="6">
+	<h3 align="center">상품 수정</h3>
+	<form action="prUpdateProc.jsp" method="post" enctype="multipart/form-data">
+	<table align="center">
+		<tr>
+			<td>상품 번호</td>
+			<td><input type="text" name="num" readonly="readonly" 
+				class="setdiaabledme"  value="<%=product.getNum()%>">
+			</td>
+		</tr>
+
+		<tr>
+			<td>상품명</td>
+			<td><input type="text" name="name" value="<%=product.getName()%>"></td>
+		</tr>
+		<tr>
+			<td>제조회사</td>
+			<td><input type="text" name="company" value="<%=product.getCompany()%>"></td>
+		</tr>
+		<tr>
+			<td>이미지</td>
+			<td><input type="file" name="image"></td>
+		</tr>
+		<tr>
+			<td>재고</td>
+			<td><input type="text" name="stock" value="<%=product.getStock()%>"></td>
+		</tr>
+		<tr>
+			<td>단가</td>
+			<td><input type="text" name="price" value="<%=product.getPrice()%>"></td>
+		</tr>
+		<tr>
+			<td>카테고리</td>
+			<td>
+				<select name="category">
+					<option value="none" selected="selected">::NORMAL::</option>
+					<option value="HIT">HIT</option>
+					<option value="NEW">NEW</option>
+					<option value="BEST">BEST</option>
+				</select>			
+			</td>
+		</tr>
+		<tr>
+			<td>상품 설명</td>
+			<td><input type="text" name="contents" value="<%=product.getContents()%>"></td>
+		</tr>
+		<tr>
+			<td>포인트</td>
+			<td><input type="text" name="point" value="<%=product.getPoint()%>"></td>
+		</tr>
+		<tr>
+			<td>입고 일자</td>
+			<td><input type="text" name="inputdate" value="<%=product.getInputdate()%>"></td>
+		</tr>
+		<tr align="center">
+			<td colspan="2">
+				<input type="submit" value="수정">
+				<input type="reset" value="취소">
+			</td>
+		</tr>		
+	</table>
+	</form>
+</td>
+</tr>
+</body>
+</html>

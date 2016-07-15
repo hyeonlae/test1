@@ -1,0 +1,97 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="mall.cart.ShoppingInfo"%>
+<%@page import="mypkg.Product"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.Map"%>
+<%@page import="mall.cart.MyCartList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./../common/top.jsp" %>    
+<!DOCTYPE html>
+<jsp:useBean id="dao" class="mypkg.DatabaseDao"></jsp:useBean>
+<%
+	MyCartList mycart = (MyCartList)session.getAttribute("mycart") ;
+
+	//maplists : 카트에 담은 나의 장바구니 목록 
+	Map<Integer, Integer> maplists = mycart.GetAllOrderLists() ; 
+	Set<Integer> keylist = maplists.keySet() ;
+	
+	List<ShoppingInfo> shoplists = new ArrayList<ShoppingInfo>();
+	int totalAmount = 0 ; //총 계산된 금액	
+	for(Integer pnum :  keylist ){
+		Product bean = dao.SelectProductByPk( pnum ) ;
+		ShoppingInfo shopinfo = new ShoppingInfo();
+		
+		int qty = maplists.get( pnum ) ;
+		int amount = qty * bean.getPrice() ;
+		shopinfo.setAmount(amount) ;
+		shopinfo.setPname( bean.getName()  ) ; 
+		shopinfo.setPnum(pnum) ;
+		shopinfo.setPrice( bean.getPrice() ) ;
+		shopinfo.setQty( qty ) ;
+		totalAmount += amount ;
+		shoplists.add( shopinfo) ;
+	}
+	session.setAttribute("shoplists", shoplists) ;
+	session.setAttribute("totalAmount", totalAmount) ;
+%>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>주문 내역</title>
+</head>
+<body>
+<tr>
+<td colspan="5" align="center">
+	<table border="1" align="center">
+		<tr>
+			<td colspan="5" align="center">
+				주문자 정보 : <%=loginfo.getName()%>(<%=loginfo.getId()%>)
+			</td>
+		</tr>
+		<tr>
+			<td>번호</td>
+			<td>상품명</td>
+			<td>주문 수량</td>
+			<td>단가</td>
+			<td>금액</td>
+		</tr>
+		<%
+			for(ShoppingInfo item : shoplists ){
+		%>
+		<tr>
+			<td><%=item.getPnum()%></td>
+			<td><%=item.getPname()%></td>
+			<td><%=item.getQty()%></td>
+			<td><%=item.getPrice()%></td>
+			<td><%=item.getAmount()%></td>
+		</tr>
+		<%
+			}
+		%>
+		<tr>
+			<td colspan="3" align="center">
+				<a href="calculate.jsp">결재하기</a>
+				&nbsp;&nbsp;&nbsp;	
+				<a href="prList.jsp">추가 주문</a>
+			</td>
+			<td colspan="2" align="center">
+				총 금액 : <%=totalAmount%>
+			</td>
+		</tr>		
+	</table>
+</td>
+</tr>
+<%@ include file="./../common/bottom.jsp" %>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

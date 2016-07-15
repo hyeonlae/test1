@@ -1,0 +1,23 @@
+<%@page import="mall.cart.MyCartList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>    
+<!DOCTYPE html>
+<%
+	MyCartList mycart = (MyCartList)session.getAttribute("mycart") ;
+	if( mycart == null ){
+		mycart = new MyCartList();		
+	}
+	int num = Integer.parseInt( request.getParameter( "num" ))  ;
+	int qty = Integer.parseInt( request.getParameter( "qty" ))  ;
+	mycart.AddOrder( num, qty ) ; 
+	session.setAttribute("mycart", mycart) ;
+	response.sendRedirect("spList.jsp") ; //장바구니 리스트로 이동.
+%>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>제목</title>
+</head>
+<body>
+</body>
+</html>

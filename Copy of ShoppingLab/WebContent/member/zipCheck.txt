@@ -1,0 +1,70 @@
+<%@page import="mypkg.Zipcode"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<jsp:useBean id="dao" class="mypkg.DatabaseDao"></jsp:useBean>
+<%
+	request.setCharacterEncoding("UTF-8") ; 
+	String finddata = request.getParameter("dong") ;
+	List<Zipcode> lists = dao.SelectZipcodeList( finddata ) ; 
+	//out.print("찾으시는 동네 수 : " + lists.size() + "<br>") ;  
+%> 
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>제목</title>
+	<script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+	<form name="zipForm" action="zipCheck.jsp" method="post">
+	<table align="center">
+		<tr>
+			<td colspan="2">
+				동이름 : <input type="text" name="dong" >
+				<input type="submit" value="검색" onclick="dongCheck();" >	
+			</td>
+		</tr>
+		<% 
+			for( Zipcode zip : lists){ 
+				String zipcode = zip.getZipcode().trim() ; 
+				String address = zip.getSido().trim() + " " ;
+				address += zip.getGugun().trim() + " " ;
+				address += zip.getDong().trim() + " " ;
+				address += zip.getBunji().trim() + " " ;
+		%>		
+		<tr>
+			<td align="center" width="20%">
+				<a href="" onclick="sendAddress('<%=zipcode%>', '<%=address%>');"> 
+					<%=zipcode%>
+				</a>					
+			</td> 
+			<td align="left" width="80%">
+				<a href="" onclick="sendAddress('<%=zipcode%>', '<%=address%>');">
+					<%=address%>
+				</a>
+			</td>
+		</tr>
+		<% 
+			}
+		%>
+	</table> 	
+	</form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

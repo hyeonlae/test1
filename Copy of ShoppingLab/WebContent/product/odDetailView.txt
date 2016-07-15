@@ -1,0 +1,91 @@
+<%@page import="mypkg.Join02"%>
+<%@page import="java.util.List"%>
+<%@page import="mypkg.DatabaseDao"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./../common/top.jsp" %>    
+<!DOCTYPE html>
+<%
+	DatabaseDao dao = new DatabaseDao();
+	request.setCharacterEncoding("UTF-8") ;
+	int oid = Integer.parseInt( request.getParameter("oid")) ; 
+	List<Join02> lists =  dao.SelectJoin02(oid) ;  
+%>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title> odDetailView.jsp </title>
+</head>
+<body>
+<tr>
+<td colspan="5" align="center">
+	<h2>주문 내역</h2>
+	<table width="80%" border="1" align="center">
+		<tr>
+			<td>상품 코드</td>
+			<td>제품명</td>
+			<td>단가</td>
+			<td>수량</td>
+			<td>금액</td>
+		</tr>
+		<%
+			int totalAmount = 0 ;
+			for(Join02 item : lists){
+				totalAmount += item.getAmount() ;
+		%>
+		<tr>
+			<td>상품 코드</td>
+			<td><%=item.getPname()%></td>
+			<td align="right"><%=df.format( item.getPrice())%></td>
+			<td><%=item.getQty()%></td>
+			<td align="right"><%=df.format( item.getAmount() )%></td>
+		</tr>
+		<%
+			}
+		%>
+		<tr>
+			<td colspan="5" align="right"> 
+				최종 금액 : <%=df.format( totalAmount)%>
+			</td>
+		</tr>		
+	</table>
+
+	<hr>
+	
+	<h2>배송 정보</h2>
+	
+	<table width="80%" border="1" align="center">
+		<tr>
+			<td width="25%" align="center">받으시는 분</td>
+			<td width="75%" align="left">
+				<%=loginfo.getName()%> 님
+			</td>
+		</tr>
+		<tr>
+			<td width="25%" align="center">주소</td>
+			<td width="75%" align="left">
+				<%=loginfo.getAddress1()%>&nbsp;<%=loginfo.getAddress2()%>
+			</td>
+		</tr>
+		<tr>
+			<td width="25%" align="center">배송 방법</td>
+			<td width="75%" align="left">
+				택배
+			</td>
+		</tr>
+	</table>
+</td>
+</tr>
+<%@ include file="./../common/bottom.jsp" %>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

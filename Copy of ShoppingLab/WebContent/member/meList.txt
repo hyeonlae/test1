@@ -1,0 +1,80 @@
+<%@page import="mypkg.Member"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="./../common/top.jsp" %>
+<%@page import="mypkg.DatabaseDao" %>
+<%
+	DatabaseDao dao = new DatabaseDao() ;
+	List<Member> lists = dao.SelectMemberList() ;
+%>    
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+	<title>meList.jsp</title>
+</head>
+<body>
+<tr>
+<td colspan="5">
+	<h3 align="center">회원 목록 조회</h3>
+	<table align="center" border="0">
+		<%=meSeparator%>
+		<tr>
+			<td>아이디</td>
+			<td>이름</td>
+			<td>비밀번호</td>
+			<td>급여</td>
+			<td>입사일자</td>
+			<td>성별</td>
+			<td>취미</td>
+			<td>직업</td>
+			<td>우편 번호</td>
+			<td>주소</td>
+			<td>세부주소</td>
+			<td>포인트</td>
+			<td>삭제</td>
+			<td>수정</td>
+		</tr>	
+		<%
+			for(Member member : lists){
+		%>
+		<%=meSeparator%>
+		<tr>
+			<td><%=member.getId()%></td>
+			<td>
+				<a href="meDetailView.jsp?id=<%=member.getId()%>"> 
+					<%=member.getName()%>
+				</a>	
+			</td>
+			<td><%=member.getPassword()%></td>
+			<td><%=member.getSalary()%></td>
+			<td><%=member.getHiredate()%></td>
+			<td><%=member.getGender()%></td>
+			<td><%=member.getHobby()%></td>
+			<td><%=member.getJob()%></td>
+			<td><%=member.getZipcode()%></td>
+			<td><%=member.getAddress1()%></td>
+			<td><%=member.getAddress2()%></td>
+			<td><%=member.getMpoint()%></td>
+			<td>
+				<a href="meDeleteProc.jsp?id=<%=member.getId()%>"> 
+					삭제
+				</a>
+			</td>
+			<td>
+				<a href="meUpdateForm.jsp?id=<%=member.getId()%>"> 
+					수정
+				</a>
+			</td>
+		</tr>
+		<%
+			}
+		%> 	
+		<%=meSeparator%>
+	</table>
+</td>
+</tr>
+<%@ include file="./../common/bottom.jsp" %>	
+</body>
+</html>
